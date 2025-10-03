@@ -1,0 +1,676 @@
+/* ===================================
+   Student Treatment Manager - Styles
+   Електронски дневник
+   =================================== */
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 10px;
+    overflow-x: hidden;
+}
+
+/* Container */
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 15px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 1.5em;
+    margin-bottom: 8px;
+}
+
+.header h2 {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+}
+
+.header p {
+    font-size: 0.9em;
+    opacity: 0.9;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 15px 10px;
+    text-align: center;
+    cursor: pointer;
+    background: #f8f9fa;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.tab:hover {
+    background: #e9ecef;
+}
+
+.tab.active {
+    background: white;
+    color: #667eea;
+    border-bottom: 3px solid #667eea;
+}
+
+/* Content Area */
+.content {
+    padding: 15px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Buttons */
+.btn {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 5px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: #48bb78;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: #f56565;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #e53e3e;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #718096;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #4a5568;
+    transform: translateY(-2px);
+}
+
+.btn-sm {
+    padding: 10px 15px;
+    font-size: 12px;
+    min-height: 36px;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Student Cards */
+.student-card {
+    background: #f7fafc;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.student-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.student-card.selected {
+    background: #e6f7ff;
+    box-shadow: 0 0 0 2px #667eea;
+}
+
+.student-info h3 {
+    color: #2d3748;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.student-info p {
+    color: #718096;
+    font-size: 14px;
+}
+
+.student-actions {
+    display: none;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.student-card.selected .student-actions {
+    display: flex;
+}
+
+/* Schedule Grid */
+.schedule-grid {
+    display: grid;
+    grid-template-columns: 80px repeat(5, 1fr);
+    gap: 1px;
+    background: #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 15px;
+    font-size: 12px;
+}
+
+.schedule-header {
+    background: #667eea;
+    color: white;
+    padding: 12px 5px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 12px;
+}
+
+.schedule-time {
+    background: #2d3748;
+    color: white;
+    padding: 12px 5px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    text-align: center;
+}
+
+.schedule-time .time-label {
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.schedule-cell {
+    background: white;
+    padding: 8px 4px;
+    min-height: 80px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow-y: auto;
+}
+
+.schedule-cell:hover {
+    background: #edf2f7;
+}
+
+.schedule-cell.active {
+    background: #e6f7ff;
+    box-shadow: inset 0 0 0 2px #667eea;
+}
+
+.student-slot {
+    background: #e6fffa;
+    padding: 6px;
+    border-radius: 6px;
+    margin: 3px 0;
+    font-size: 11px;
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 3px solid #38b2ac;
+    position: relative;
+}
+
+.student-slot .remove-btn {
+    background: #f56565;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 3px 6px;
+    font-size: 10px;
+    cursor: pointer;
+    min-height: auto;
+    display: none;
+}
+
+.student-slot.active .remove-btn {
+    display: block;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    animation: slideUp 0.3s ease-in-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card h2 {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+/* Export Section */
+.export-section {
+    background: #f7fafc;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+/* Student Checkbox List */
+.student-checkbox-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.student-checkbox-item {
+    padding: 12px;
+    margin: 5px 0;
+    background: white;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.student-checkbox-item:hover {
+    background: #f7fafc;
+}
+
+.student-checkbox-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Plan Colors */
+.plan-color-1 { border-left-color: #f56565; }
+.plan-color-2 { border-left-color: #48bb78; }
+.plan-color-3 { border-left-color: #4299e1; }
+.plan-color-4 { border-left-color: #ed8936; }
+.plan-color-5 { border-left-color: #9f7aea; }
+.plan-color-6 { border-left-color: #38b2ac; }
+
+/* Progress Container */
+.progress-container {
+    margin-top: 15px;
+}
+
+/* Activity Item */
+.activity-item {
+    background: #f7fafc;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.activity-checkbox {
+    width: 24px;
+    height: 24px;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-text {
+    font-weight: 500;
+    color: #2d3748;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.activity-timestamp {
+    font-size: 12px;
+    color: #718096;
+    font-style: italic;
+}
+
+/* Monthly Activity List */
+.monthly-activity-list {
+    margin-top: 20px;
+}
+
+.monthly-student-section {
+    background: #f7fafc;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.monthly-activity-item {
+    background: white;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.monthly-activity-text {
+    flex: 1;
+    min-width: 200px;
+    font-size: 14px;
+    color: #2d3748;
+}
+
+.monthly-activity-time {
+    font-size: 12px;
+    color: #718096;
+    white-space: nowrap;
+}
+
+/* Timestamp Selector */
+.timestamp-selector {
+    margin-top: 8px;
+    padding: 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 100%;
+}
+
+/* Plan Template List */
+.plan-template-list {
+    margin-top: 15px;
+}
+
+.plan-section {
+    background: #f7fafc;
+    padding: 15px;
+    margin: 12px 0;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.plan-activity {
+    padding: 10px;
+    margin: 5px 0;
+    background: white;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.plan-activity-text {
+    flex: 1;
+    font-size: 14px;
+}
+
+.plan-activity-text a {
+    color: #4299e1;
+    text-decoration: underline;
+    word-break: break-all;
+}
+
+/* Mobile Actions */
+.mobile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.mobile-actions .btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .schedule-grid {
+        grid-template-columns: 70px repeat(5, 1fr);
+        font-size: 10px;
+    }
+    
+    .schedule-header, .schedule-time {
+        padding: 8px 3px;
+    }
+    
+    .schedule-time .time-label {
+        font-size: 12px;
+    }
+    
+    .student-slot {
+        font-size: 9px;
+        padding: 4px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .mobile-actions {
+        flex-direction: column;
+    }
+    
+    .mobile-actions .btn {
+        width: 100%;
+    }
+    
+    .header h1 {
+        font-size: 1.2em;
+    }
+    
+    .header h2 {
+        font-size: 0.9em;
+    }
+}
+
+/* Prevent Selection on Interactive Elements */
+.btn, .tab, .schedule-cell {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        padding: 0;
+    }
+    
+    .tabs, .mobile-actions, .btn {
+        display: none !important;
+    }
+    
+    .container {
+        box-shadow: none;
+        max-width: 100%;
+    }
+    
+    .content {
+        max-height: none;
+        overflow: visible;
+    }
+    
+    .schedule-grid {
+        page-break-inside: avoid;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

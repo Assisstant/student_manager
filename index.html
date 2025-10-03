@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Електронски дневник за управување со неделен распоред на ученици и напредок">
+    <meta name="author" content="Кабинет за слух, говор, глас, алтернатива и аугментативна комуникација">
+    <title>Електронски дневник - Student Treatment Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Електронски дневник</h1>
+            <h2>Кабинет за слух, говор, глас, алтернатива и аугментативна комуникација</h2>
+            <p>Систем за управување со неделен распоред на ученици и напредок во оперативниот план</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('students')">Студенти</button>
+            <button class="tab" onclick="switchTab('schedule')">Распоред</button>
+            <button class="tab" onclick="switchTab('progress')">Напредок</button>
+            <button class="tab" onclick="switchTab('plans')">Планови</button>
+            <button class="tab" onclick="switchTab('data')">Податоци</button>
+        </div>
+        
+        <div class="content">
+            <!-- Students Tab -->
+            <div id="students" class="tab-content active">
+                <div class="mobile-actions">
+                    <button class="btn btn-primary" onclick="showAddStudentModal()">+ Додади Студент</button>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h2 id="totalStudents">0</h2>
+                        <p>Вкупно Студенти</p>
+                    </div>
+                    <div class="stat-card">
+                        <h2 id="totalSessions">0</h2>
+                        <p>Сесии Неделно</p>
+                    </div>
+                </div>
+                
+                <div id="studentList"></div>
+            </div>
+            
+            <!-- Schedule Tab -->
+            <div id="schedule" class="tab-content">
+                <div class="mobile-actions">
+                    <button class="btn btn-success" onclick="saveSchedule()">💾 Зачувај</button>
+                    <button class="btn btn-secondary" onclick="clearSchedule()">🗑️ Избриши</button>
+                </div>
+                <div id="scheduleGrid"></div>
+            </div>
+            
+            <!-- Progress Tab -->
+            <div id="progress" class="tab-content">
+                <h2 style="margin-bottom: 15px;">Следење на Напредок</h2>
+                
+                <div class="mobile-actions">
+                    <button class="btn btn-primary" onclick="switchProgressView('individual')">По Студент</button>
+                    <button class="btn btn-success" onclick="switchProgressView('monthly')">Месечен</button>
+                </div>
+                
+                <div id="individualProgressView">
+                    <div class="form-group">
+                        <label>Избери Студент:</label>
+                        <select id="progressStudentSelect" onchange="loadStudentProgress()">
+                            <option value="">-- Избери студент --</option>
+                        </select>
+                    </div>
+                    <div id="progressContainer"></div>
+                </div>
+                
+                <div id="monthlyProgressView" style="display: none;">
+                    <div class="form-group">
+                        <label>Избери Месец:</label>
+                        <input type="month" id="monthSelector" onchange="loadMonthlyProgress()">
+                    </div>
+                    <div id="monthlyContainer"></div>
+                </div>
+            </div>
+            
+            <!-- Plans Tab -->
+            <div id="plans" class="tab-content">
+                <div class="mobile-actions">
+                    <button class="btn btn-primary" onclick="showUploadPlanModal()">📄 Вчитај Excel</button>
+                    <button class="btn btn-success" onclick="showAddActivityModal()">+ Активност</button>
+                    <button class="btn btn-secondary" onclick="showCreatePlanModal()">📝 Нов План</button>
+                </div>
+                <div id="planTemplateList"></div>
+            </div>
+            
+            <!-- Data Tab -->
+            <div id="data" class="tab-content">
+                <div class="export-section">
+                    <h2 style="margin-bottom: 15px;">📤 Експорт / Импорт</h2>
+                    <div class="mobile-actions">
+                        <button class="btn btn-success" onclick="exportData()">💾 Експортирај</button>
+                        <button class="btn btn-primary" onclick="document.getElementById('importFile').click()">📁 Импортирај</button>
+                    </div>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                </div>
+                
+                <div class="export-section">
+                    <h2 style="margin-bottom: 15px;">📊 Извештаи</h2>
+                    <div class="mobile-actions">
+                        <button class="btn btn-primary" onclick="generateScheduleReport()">📅 Распоред</button>
+                        <button class="btn btn-success" onclick="generateProgressReport()">📈 Напредок</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add/Edit Student Modal -->
+    <div id="addStudentModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 15px;">Додади/Измени Студент</h2>
+            <div class="form-group">
+                <label>Име и Презиме</label>
+                <input type="text" id="studentName" placeholder="пр. Марија Чадамова">
+            </div>
+            <div class="form-group">
+                <label>Одделение</label>
+                <input type="text" id="studentGrade" placeholder="пр. VI-а">
+            </div>
+            <div class="form-group">
+                <label>Тип План (1-6)</label>
+                <select id="studentPlanType">
+                    <option value="1">План 1</option>
+                    <option value="2">План 2</option>
+                    <option value="3">План 3</option>
+                    <option value="4">План 4</option>
+                    <option value="5">План 5</option>
+                    <option value="6">План 6</option>
+                </select>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-success" style="flex: 1;" onclick="saveStudent()">Зачувај</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal('addStudentModal')">Откажи</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Schedule Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 15px;">Доделете Студенти</h2>
+            <p style="margin-bottom: 15px; color: #718096;">Изберете еден или повеќе студенти за овој термин</p>
+            <div id="studentCheckboxList" class="student-checkbox-list"></div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-success" style="flex: 1;" onclick="assignStudentsToSlot()">Зачувај</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal('scheduleModal')">Откажи</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Activity Modal -->
+    <div id="addActivityModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 15px;">Додади Активност</h2>
+            <div class="form-group">
+                <label>План Тип (1-6)</label>
+                <select id="activityPlanType">
+                    <option value="1">План 1</option>
+                    <option value="2">План 2</option>
+                    <option value="3">План 3</option>
+                    <option value="4">План 4</option>
+                    <option value="5">План 5</option>
+                    <option value="6">План 6</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Активност</label>
+                <textarea id="activityText" rows="3" placeholder="Внесете текст на активност"></textarea>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-success" style="flex: 1;" onclick="addActivity()">Додади</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal('addActivityModal')">Откажи</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Plan Modal -->
+    <div id="uploadPlanModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 15px;">Вчитај План од Excel</h2>
+            <div class="form-group">
+                <label>Избери План Тип (1-6)</label>
+                <select id="uploadPlanType">
+                    <option value="1">План 1</option>
+                    <option value="2">План 2</option>
+                    <option value="3">План 3</option>
+                    <option value="4">План 4</option>
+                    <option value="5">План 5</option>
+                    <option value="6">План 6</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Избери Excel датотека</label>
+                <input type="file" id="uploadPlanFile" accept=".xlsx,.xls,.csv">
+            </div>
+            <p style="color: #718096; font-size: 14px; margin: 15px 0;">
+                Забелешка: Системот ќе ги вчита активностите од колона B во првиот sheet.
+            </p>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-success" style="flex: 1;" onclick="uploadPlanFile()">Вчитај</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal('uploadPlanModal')">Откажи</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Plan Modal -->
+    <div id="createPlanModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 15px;">Креирај Нов План</h2>
+            <div class="form-group">
+                <label>План Тип (1-6)</label>
+                <select id="createPlanType">
+                    <option value="1">План 1</option>
+                    <option value="2">План 2</option>
+                    <option value="3">План 3</option>
+                    <option value="4">План 4</option>
+                    <option value="5">План 5</option>
+                    <option value="6">План 6</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Активности (една по ред)</label>
+                <textarea id="createPlanActivities" rows="12" placeholder="Внесете активности, една по ред...
+Пример:
+Читање и пишување на зборови со буквата А
+Училиште-говорна вежба
+Изминува препреки"></textarea>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-success" style="flex: 1;" onclick="createPlan()">Креирај План</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal('createPlanModal')">Откажи</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Plan Modal -->
+    <div id="editPlanModal" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 15px;">Измени План <span id="editPlanNumber"></span></h2>
+            <div class="form-group">
+                <label>Активности (една по ред)</label>
+                <textarea id="editPlanActivities" rows="12"></textarea>
+            </div>
+            <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+                <button class="btn btn-success" style="flex: 1;" onclick="savePlanEdit()">Зачувај</button>
+                <button class="btn btn-danger" style="flex: 1;" onclick="deletePlan()">Избриши План</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal('editPlanModal')">Откажи</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <!-- Main Application Scripts -->
+    <script src="script.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

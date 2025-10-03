@@ -1,0 +1,29 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup Files
+*.bak
+*~
+*.backup
+
+# Logs
+*.log
+
+# Export Files (Optional - remove if you want to track exports)
+*.json
+!package.json
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary Files
+*.tmp
+temp/
+
+# Node Modules (if added later)
+node_modules/
